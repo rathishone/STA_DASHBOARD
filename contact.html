@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Intelligence — Contact Support</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-bg: #0B2B3D; --sidebar-hover: #0D3347; --sidebar-active: #0F4060;
+            --teal: #0E7490; --teal-light: #06B6D4; --bg: #F0F4F7; --card: #FFFFFF;
+            --text: #0B1F2E; --text-muted: #5A7A8A; --border: #D8E8EE;
+            --red: #EF4444; --green: #10B981;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; overflow-x:hidden; }
+
+        .sidebar { width:210px; min-height:100vh; background:var(--sidebar-bg); display:flex; flex-direction:column; position:fixed; top:0; left:0; z-index:100; }
+        .sidebar-brand { padding:22px 20px 16px; border-bottom:1px solid rgba(255,255,255,0.07); }
+        .sidebar-brand .ledger-label { font-family:'Syne',sans-serif; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:2px; }
+        .sidebar-brand .ledger-sub { font-size:0.72rem; color:rgba(255,255,255,0.5); }
+        .sidebar-nav { flex:1; padding:16px 0; }
+        .nav-item { display:flex; align-items:center; gap:12px; padding:11px 20px; color:rgba(255,255,255,0.55); font-size:0.82rem; font-weight:500; cursor:pointer; transition:all 0.2s; text-decoration:none; border-left:3px solid transparent; }
+        .nav-item:hover { background:var(--sidebar-hover); color:rgba(255,255,255,0.85); border-left-color:var(--teal-light); }
+        .nav-item.active { background:var(--sidebar-active); color:#fff; border-left-color:var(--teal-light); }
+        .nav-item i { font-size:1rem; width:20px; text-align:center; }
+        .sidebar-bottom { padding:16px 0; border-top:1px solid rgba(255,255,255,0.07); }
+        .btn-export { margin:8px 16px; background:var(--teal); color:#fff; border:none; padding:10px 16px; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:8px; width:calc(100% - 32px); transition:background 0.2s; }
+        .btn-export:hover { background:#0D6B85; }
+
+        .main-wrap { margin-left:210px; flex:1; display:flex; flex-direction:column; }
+        .topnav { background:var(--card); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 28px; height:58px; position:sticky; top:0; z-index:50; }
+        .topnav-left { display:flex; align-items:center; gap:32px; }
+        .brand { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; color:var(--teal); letter-spacing:-0.01em; }
+        .topnav-links { display:flex; gap:4px; }
+        .topnav-link { padding:6px 14px; font-size:0.82rem; font-weight:500; color:var(--text-muted); text-decoration:none; border-radius:6px; border-bottom:2px solid transparent; transition:all 0.2s; }
+        .topnav-link.active { color:var(--teal); border-bottom-color:var(--teal); font-weight:600; }
+        .topnav-link:hover { color:var(--teal); }
+        .topnav-right { display:flex; align-items:center; gap:12px; }
+        .icon-btn { width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); position:relative; transition:all 0.2s; }
+        .icon-btn:hover { border-color:var(--teal); color:var(--teal); }
+        .notif-dot { position:absolute; top:5px; right:5px; width:7px; height:7px; border-radius:50%; background:var(--red); border:1px solid #fff; }
+        .avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#0B4F6C); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer; }
+
+        .page-body { padding:40px 28px; flex:1; display:flex; justify-content:center; align-items:flex-start; }
+        .contact-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:40px; max-width:620px; width:100%; box-shadow:0 10px 30px rgba(0,0,0,0.03); }
+        .contact-header { text-align:center; margin-bottom:32px; }
+        .contact-header h1 { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--text); margin-bottom:8px; }
+        .contact-header p { font-size:0.9rem; color:var(--text-muted); line-height:1.5; }
+        .form-group { margin-bottom:18px; }
+        .form-group label { display:block; font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px; }
+        .form-control { width:100%; padding:14px 16px; border:1px solid var(--border); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:0.95rem; color:var(--text); background:#F8FAFC; transition:all 0.2s; }
+        .form-control:focus { outline:none; border-color:var(--teal); background:#fff; box-shadow:0 0 0 3px rgba(14,116,144,0.1); }
+        textarea.form-control { min-height:160px; resize:vertical; }
+        .btn-submit { width:100%; background:var(--teal); color:#fff; border:none; padding:14px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:all 0.2s; }
+        .btn-submit:hover { background:#0C6180; transform:translateY(-1px); }
+        .contact-info { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:32px; padding-top:28px; border-top:1px solid var(--border); }
+        .info-item { display:flex; align-items:flex-start; gap:12px; }
+        .info-icon { width:36px; height:36px; border-radius:10px; background:#F0F7FA; color:var(--teal); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+        .info-text h4 { font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+        .info-text p { font-size:0.8rem; color:var(--text-muted); line-height:1.4; }
+
+        @media(max-width:768px) { .sidebar{width:60px;} .sidebar .nav-item span,.sidebar-brand .ledger-label,.sidebar-brand .ledger-sub,.btn-export span{display:none;} .main-wrap{margin-left:60px;} .contact-info{grid-template-columns:1fr;} }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="ledger-label">Civic Ledger</div>
+            <div class="ledger-sub">STA - Indian Cities</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="index.html"><i class="bi bi-buildings"></i><span>City Profile</span></a>
+            <a class="nav-item" href="compare.html"><i class="bi bi-intersect"></i><span>Compare Cities</span></a>
+            <a class="nav-item active" href="contact.html"><i class="bi bi-envelope"></i><span>Contact</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a class="nav-item" href="#"><i class="bi bi-file-text"></i><span>Documentation</span></a>
+            <a class="nav-item" href="#"><i class="bi bi-clock-history"></i><span>Archive</span></a>
+        </div>
+    </aside>
+    <div class="main-wrap">
+        <header class="topnav">
+            <div class="topnav-left">
+                <div class="brand">URBAN INTELLIGENCE</div>
+                <nav class="topnav-links">
+                    <a href="index.html" class="topnav-link">STA – Indian Cities</a>
+                    <a href="compare.html" class="topnav-link">Compare Cities</a>
+                    <a href="contact.html" class="topnav-link active">Contact Support</a>
+                </nav>
+            </div>
+            <div class="topnav-right">
+                <button class="icon-btn"><i class="bi bi-bell"></i><span class="notif-dot"></span></button>
+                <button class="icon-btn"><i class="bi bi-gear"></i></button>
+                <div class="avatar">UI</div>
+            </div>
+        </header>
+        <main class="page-body">
+            <div class="contact-card">
+                <div class="contact-header">
+                    <h1>Contact the AI Data Core</h1>
+                    <p>Send your message to the system operators using the shared Urban Intelligence app shell.</p>
+                </div>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input id="subject" class="form-control" type="text" placeholder="Enter subject" value="Contact request" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="bi bi-send"></i> Send Email</button>
+                </form>
+        
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const to = 'rathishone@gmail.com';
+            const subject = encodeURIComponent(document.getElementById('subject').value || 'Contact request');
+            const body = encodeURIComponent(document.getElementById('message').value || '');
+            window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+        });
+    </script>
+</body>
+</html>
